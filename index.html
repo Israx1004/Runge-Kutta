@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Graficador RK4</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Runge Kutta</h1>
+  </header>
+
+  <div class="main">
+    <form class="panel" id="form" autocomplete="off">
+      <div class="field">
+        <label for="fx">Ecuacioin</label>
+        <div class="fx-row"><span>dy/dx =</span><input type="text" id="fx" value="2*x*y" spellcheck="false" aria-describedby="fx-help"></div>
+        <!--<p class="hint" id="fx-help">Usa <code>x</code>, <code>y</code>, <code>+ - * / ^</code> y funciones como <code>sin cos tan exp ln sqrt abs</code>, constantes <code>pi</code> y <code>e</code>.</p>
+      -->
+      </div>
+
+      <div class="grid2">
+        <div class="field"><label for="x0">x₀ inicial</label><input type="number" id="x0" value="1" step="any"></div>
+        <div class="field"><label for="y0">y₀ inicial</label><input type="number" id="y0" value="1" step="any"></div>
+        <div class="field"><label for="h">Paso h</label><input type="number" id="h" value="0.1" step="any"></div>
+        <div class="field"><label for="xf">x final</label><input type="number" id="xf" value="1.5" step="any"></div>
+      </div>
+
+      <p class="msg" id="msg" role="alert" hidden></p>
+
+      <div class="field">
+        <span class="label">Ejemplos</span>
+        <div class="examples" id="examples"></div>
+      </div>
+    </form>
+
+    <section class="chart-box" aria-label="Gráfica">
+      <div class="summary">
+        <span class="big" id="final"></span>
+        <span class="meta" id="meta"></span>
+      </div>
+      <div class="chart" id="chart"></div>
+    </section>
+  </div>
+
+  <section class="table-box" aria-label="Tabla de valores">
+    <div class="table-head">
+      <h2>Tabla de valores</h2>
+      <span class="hint" id="rows-note"></span>
+    </div>
+    <div class="scroll" id="scroll">
+      <table>
+        <thead>
+          <tr><th>n</th><th>Xn</th><th>Yn</th><th>K1</th><th>K2</th><th>K3</th><th>K4</th><th>Yn+1</th></tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <details>
+    <summary>Como se calcula cada punto?</summary>
+    <div class="how">
+      <p>En cada paso evalúa la pendiente f(x, y) en cuatro lugares del intervalo [xₙ, xₙ + h] y avanza con su promedio ponderado. Las pendientes del punto medio pesan el doble.</p>
+      <div class="formulas">k₁ = f(xₙ, yₙ)
+k₂ = f(xₙ + h/2, yₙ + (h/2)·k₁)
+k₃ = f(xₙ + h/2, yₙ + (h/2)·k₂)
+k₄ = f(xₙ + h,   yₙ + h·k₃)
+
+yₙ₊₁ = yₙ + (h/6)·(k₁ + 2k₂ + 2k₃ + k₄)
+xₙ₊₁ = xₙ + h</div>
+      <p>Este es el código exacto que se ejecuta (archivo <code>rk4.js</code>):</p>
+      <pre class="code" id="code"></pre>
+    </div>
+  </details>
+</div>
+
+<script src="rk4.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
